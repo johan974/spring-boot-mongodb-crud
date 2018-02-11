@@ -21,7 +21,17 @@ public class MongoUserDetails  implements UserDetails{
     public MongoUserDetails(String username,String password,String[] authorities) {
         this.username = username;
         this.password = password;
+        System.out.println( "Autorities: " + (authorities==null? "null" : authorities.length));
+        if( authorities != null) {
+            for( String aut : authorities) {
+                System.out.println( " > autority = " + aut);
+            }
+        }
         this.grantedAuthorities = AuthorityUtils.createAuthorityList(authorities);
+    }
+    public void setAuthorities( String[] authorities) {
+        this.grantedAuthorities = AuthorityUtils.createAuthorityList(authorities);
+        System.out.println( "Setting authorities: " + authorities);
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

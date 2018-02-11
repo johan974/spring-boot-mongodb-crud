@@ -21,7 +21,7 @@ public class CustomUserDetailsSecurityConfig extends WebSecurityConfigurerAdapte
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-                .antMatchers("/contact**/**").hasRole( "USER")
+                .antMatchers("/contact**/**").hasRole( "user")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

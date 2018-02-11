@@ -2,6 +2,8 @@ package com.djamware.angular.service;
 
 import com.djamware.angular.repositories.MongoSecurityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +22,16 @@ public class CustomerUserDetailsService implements UserDetailsService {
         MongoUserDetails user = repository.findByUsername(username);
         if( user == null) {
             throw new UsernameNotFoundException( "Username not found " + username);
+        }
+        System.out.println( " username found: " + user.getUsername());
+        if( user.getAuthorities() == null) {
+            System.out.println( " authorities null. Correcting");
+            String[] auts = new String[] { "ROLE_user", "user"};
+            user = new MongoUserDetails( username, user.getPassword(), auts );
+        }
+        System.out.println( "Authorities");
+        for( GrantedAuthority s : user.getAuthorities()) {
+            System.out.println( " > authority " + s.getAuthority() + ", string = " + s.toString());
         }
         return user;
     }
